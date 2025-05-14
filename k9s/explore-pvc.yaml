@@ -11,36 +11,36 @@ plugins:
     args:
       - -c
       - |
-       kubectl run -n=$NAMESPACE -i --rm --tty alpine --overrides='{
-        "apiVersion": "v1",
-        "spec": {
-          "containers": [
-            {
-              "name": "alpine",
-              "image": "alpine",
-              "args": [
-                "sh",
-                "-c",
-                "cd /PVC && exec sh"
-              ],
-              "stdin": true,
-              "stdinOnce": true,
-              "tty": true,
-              "volumeMounts": [
-                {
-                  "mountPath": "/PVC",
-                  "name": "target-pvc"
-                }
-              ]
-            }
-          ],
-          "volumes": [
-            {
-              "name": "target-pvc",
-              "persistentVolumeClaim": {
-                "claimName": "$NAME"
-              }
-            }
-          ]
-        }
-        }' --image=alpine --restart=Never -- sh
+        kubectl run -n=$NAMESPACE -i --rm --tty alpine-$NAME-explorer --overrides='{
+         "apiVersion": "v1",
+         "spec": {
+           "containers": [
+             {
+               "name": "alpine",
+               "image": "alpine",
+               "args": [
+                 "sh",
+                 "-c",
+                 "cd /PVC && exec sh"
+               ],
+               "stdin": true,
+               "stdinOnce": true,
+               "tty": true,
+               "volumeMounts": [
+                 {
+                   "mountPath": "/PVC",
+                   "name": "target-pvc"
+                 }
+               ]
+             }
+           ],
+           "volumes": [
+             {
+               "name": "target-pvc",
+               "persistentVolumeClaim": {
+                 "claimName": "$NAME"
+               }
+             }
+           ]
+         }
+         }' --image=alpine --restart=Never -- sh
